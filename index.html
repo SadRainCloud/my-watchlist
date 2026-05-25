@@ -1,13 +1,193 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>my-watchlist</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>my-watchlist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1 class="logo">
+        <span id="logo-text">Watchlist</span>
+      </h1>
+    </header>
+
+    <section class="filters">
+      <div class="filters-row">
+        <form id="search-form" class="filter-pill filter-pill--search">
+          <input type="text" id="search-input" placeholder="Search..." aria-label="Search by title" />
+          <button type="submit" class="icon-btn">
+            🔍
+          </button>
+        </form>
+
+        <div class="type-toggle">
+          <button type="button" class="type-chip" data-type="all">All</button>
+          <button type="button" class="type-chip" data-type="movie">Movies</button>
+          <button type="button" class="type-chip" data-type="tv">Series</button>
+          <button type="button" class="type-chip" data-type="anime">Anime</button>
+        </div>
+
+        <div class="filter-pill">
+          <label for="genre-select">Genre</label>
+          <select id="genre-select">
+            <option value="">All genres</option>
+          </select>
+        </div>
+
+        <div class="filter-pill">
+          <label for="status-select">Status</label>
+          <select id="status-select">
+            <option value="">Any</option>
+            <option value="upcoming">Upcoming</option>
+            <option value="airing">Releasing</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <div class="filter-pill">
+          <label for="sort-select">Sort</label>
+          <select id="sort-select">
+            <option value="popularity.desc">Popularity</option>
+            <option value="vote_average.desc">Rating</option>
+            <option value="primary_release_date.desc">Release date</option>
+            <option value="original_title.asc">Alphabetical</option>
+          </select>
+        </div>
+
+        <div class="header-actions">
+          <button type="button" id="watchlist-page-btn" class="header-btn">
+            My Watchlist
+          </button>
+          <button type="button" id="theme-toggle" class="theme-toggle">
+            🌙
+          </button>
+
+          <!-- dit is een deel van een mijn oude code die ik moet behouden anders verdwijnt de lijn onder mijn filter. -->
+          <div id="advanced-filters-panel" class="advanced-filters advanced-filters--hidden">
+            <div class="advanced-group">
+              <h3>Country</h3>
+              <div class="advanced-grid">
+                <label><input type="checkbox" value="US" class="country-checkbox" />
+                  US</label>
+                <label><input type="checkbox" value="GB" class="country-checkbox" />
+                  UK</label>
+                <label><input type="checkbox" value="FR" class="country-checkbox" />
+                  France</label>
+                <label><input type="checkbox" value="BE" class="country-checkbox" />
+                  Belgium</label>
+                <label><input type="checkbox" value="JP" class="country-checkbox" />
+                  Japan</label>
+                <label><input type="checkbox" value="KR" class="country-checkbox" />
+                  South Korea</label>
+                <label><input type="checkbox" value="CN" class="country-checkbox" />
+                  China</label>
+              </div>
+            </div>
+          </div>
+    </section>
+
+    <main class="app-main">
+      <section id="discover-view" class="view view--active">
+        <section class="hero-slider">
+          <h2 id="top-rated-title">Top Rated</h2>
+          <div id="hero-slider-inner" class="hero-slider-inner">
+          </div>
+        </section>
+
+        <section class="movies-section">
+          <h2 id="discover-title">Discover</h2>
+          <div id="movies-grid" class="movies-grid"></div>
+
+          <div class="pagination" id="discover-pagination">
+            <button type="button" id="prev-page-btn" class="page-btn" disabled>
+              Prev
+            </button>
+
+            <div class="page-numbers" id="page-numbers"></div>
+
+            <button type="button" id="next-page-btn" class="page-btn">
+              Next
+            </button>
+          </div>
+        </section>
+
+        <section class="top-rated-section">
+          <h2 id="top-rated-title">Top Rated</h2>
+          <div id="top-rated-grid" class="movies-grid"></div>
+        </section>
+      </section>
+
+      <section id="watchlist-view" class="view view--hidden">
+        <header class="watchlist-header">
+          <h2>My Watchlist</h2>
+          <div class="watchlist-controls">
+            <div class="watchlist-status-filters">
+              <button type="button" class="status-chip status-chip--active" data-status="to-watch">
+                To Watch
+              </button>
+              <button type="button" class="status-chip" data-status="watching">
+                Watching
+              </button>
+              <button type="button" class="status-chip" data-status="finished">
+                Finished
+              </button>
+              <button type="button" class="status-chip status-chip--favorite" data-status="favorite">
+                Favorites
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <ul id="watchlist" class="watchlist-list"></ul>
+      </section>
+    </main>
+  </div>
+
+  <div id="details-modal" class="modal modal--hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button type="button" id="modal-close-btn" class="modal-close-btn">
+        ✕
+      </button>
+      <div class="modal-body">
+        <img id="modal-poster" class="modal-poster" alt="" />
+        <div class="modal-info">
+          <h2 id="modal-title"></h2>
+          <p id="modal-meta" class="modal-meta"></p>
+          <p id="modal-overview" class="modal-overview"></p>
+
+          <div id="modal-trailer" class="modal-trailer"></div>
+          <div id="modal-cast" class="modal-cast"></div>
+
+          <div class="modal-actions">
+            <button type="button" id="modal-favorite-btn" class="watchlist-btn">
+              ♡ Add to favorites
+            </button>
+            <div class="status-buttons">
+              <button type="button" class="status-chip" data-modal-status="to-watch">
+                To watch
+              </button>
+              <button type="button" class="status-chip" data-modal-status="watching">
+                Watching
+              </button>
+              <button type="button" class="status-chip" data-modal-status="finished">
+                Finished
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>
