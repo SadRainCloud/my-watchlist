@@ -79,7 +79,7 @@ Tijdens de ontwikkeling van deze applicatie is gebruikgemaakt van de volgende br
 * **Stack Overflow / Dev.to** – Inspecteren van codevoorbeelden voor TMDB-requests en logica rondom watchlists.
 * **AI-Assistentie (ChatGPT / Gemini)** – Gebruikt als digitale sparringpartner voor:
   * Het debuggen van JavaScript-fouten (zoals event handlers, modal-logica en de favorite toggles).
-  * Het structureren van de Vite-setup en de algehele projectarchitectuur.
+  * Het structureren van de Vite-setup en het opbouwen van de main.js.
   * Het schrijven en vertalen van deze documentatie (inclusief specifieke bugfixes rondom de *modal favorite button* en de *view-toggle* op basis van ons chatgesprek).
 
 ---
